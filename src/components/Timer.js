@@ -1,4 +1,38 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import styled from 'styled-components';
+import moment from 'moment-timezone';
+
+export const ButtonCustom = styled.button`
+  background-color: rgb(0, 153, 255);
+  color: white;
+  padding: 0;
+  border-radius: 10px;
+  border: none;
+  margin: 5px;
+  cursor: pointer;
+  box-shadow: 2px 2px rgb(0, 50, 80);
+  min-width: 100px;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  .name {
+    display: inline-block;
+    font-size: 1.1em;
+    padding: 9px 10px 0 10px;
+    min-height: 16;
+  }
+  .tz {
+    box-sizing: border-box;
+    background-color: #ff0000;
+    display: block;
+    font-size: 0.7em;
+    width: 100%;
+    padding: 2px 0 4px;
+    border-radius: 0 0 10px 10px;
+  }
+`;
 
 function Timer({ actualData, setTimerName }) {
   const [timer, setTimer] = useState('');
@@ -10,13 +44,16 @@ function Timer({ actualData, setTimerName }) {
 
   function customDates() {
     return actualData.map((dataSet) => (
-      <button
+      <ButtonCustom
         key={`${dataSet[2]}`}
         name={`${dataSet[0]}`}
         onClick={(e) => newDate(dataSet[1], e)}
       >
-        {dataSet[0]}
-      </button>
+        <span className="name">
+          {dataSet[0] === '' ? 'Custom' : dataSet[0]}
+        </span>
+        <span className="tz">{dataSet[3]}</span>
+      </ButtonCustom>
     ));
   }
 
@@ -50,24 +87,27 @@ function Timer({ actualData, setTimerName }) {
 
   return (
     <>
-      <button
+      <ButtonCustom
         name="Christmass"
         onClick={(e) => newDate(+new Date(`${year}-12-25T00:00`), e)}
       >
-        Christmass
-      </button>
-      <button
-        name="New Year"
+        <span className="name">Christmass</span>{' '}
+        <span className="tz">{moment.tz.guess()}</span>
+      </ButtonCustom>
+      <ButtonCustom
+        Customname="New Year"
         onClick={(e) => newDate(+new Date(`${year + 1}-01-01T00:00`), e)}
       >
-        New Year
-      </button>
-      <button
+        <span className="name">New Year</span>{' '}
+        <span className="tz">{moment.tz.guess()}</span>
+      </ButtonCustom>
+      <ButtonCustom
         name="Hallowen"
         onClick={(e) => newDate(+new Date(`${year}-10-31T00:00`), e)}
       >
-        Hallowen
-      </button>
+        <span className="name">Hallowen</span>{' '}
+        <span className="tz">{moment.tz.guess()}</span>
+      </ButtonCustom>
       {customDates()}
       <p>{`
     ${timer?.[0] ? timer?.[0] : 0} days,
